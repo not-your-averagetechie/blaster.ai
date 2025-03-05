@@ -1,15 +1,22 @@
 {
   "version": 2,
+  "buildCommand": "pip install -r requirements.txt",
+  "functions": {
+    "api/*.py": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
   "builds": [
     {
-      "src": "app/main.py",
+      "src": "api/app.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "app/main.py"
+      "dest": "api/app.py"
     }
   ],
   "env": {
