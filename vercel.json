@@ -1,12 +1,9 @@
 {
-  "buildCommand": "pip install -r requirements.txt",
-  "outputDirectory": ".",
-  "framework": "streamlit",
-  "devCommand": "streamlit run app/main.py",
+  "version": 2,
   "builds": [
     {
       "src": "app/main.py",
-      "use": "@streamlit/vercel-build@0.1.0"
+      "use": "@vercel/python"
     }
   ],
   "routes": [
@@ -14,5 +11,9 @@
       "src": "/(.*)",
       "dest": "app/main.py"
     }
-  ]
+  ],
+  "env": {
+    "PYTHONPATH": ".",
+    "PORT": "8501"
+  }
 }
