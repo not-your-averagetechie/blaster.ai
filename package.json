@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "groq-sdk": "^0.15.0",
+    "langchain": "^0.3.19"
+  }
+}

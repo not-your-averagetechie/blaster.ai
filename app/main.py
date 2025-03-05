@@ -1,14 +1,26 @@
 import streamlit as st
 from langchain_community.document_loaders import WebBaseLoader
+from ssl_config import configure_ssl
 
 from chains import Chain
 from portfolio import Portfolio
-from utils import clean_text
+from utils import clean_text, suppress_warnings
 
 
 def create_streamlit_app(llm, portfolio, clean_text):
     st.title("📧 Cold Mail Generator")
-    url_input = st.text_input("Enter a URL:", value="https://jobs.nike.com/job/R-33460")
+    
+    # Initialize session state for url_input if it doesn't exist
+    if 'url_input' not in st.session_state:
+        st.session_state.url_input = "https://jobs.nike.com/job/R-33460"
+    
+    # Use the session state value as default
+    url_input = st.text_input(
+        "Enter a URL:", 
+        value=st.session_state.url_input,
+        key="url_input"
+    )
+    
     submit_button = st.button("Submit")
 
     if submit_button:
@@ -26,10 +38,18 @@ def create_streamlit_app(llm, portfolio, clean_text):
             st.error(f"An Error Occurred: {e}")
 
 
-if __name__ == "__main__":
+@suppress_warnings
+def main():
+    # Configure SSL context
+    configure_ssl()
+    
     chain = Chain()
     portfolio = Portfolio()
     st.set_page_config(layout="wide", page_title="Cold Email Generator", page_icon="📧")
     create_streamlit_app(chain, portfolio, clean_text)
+
+
+if __name__ == "__main__":
+    main()
 
 

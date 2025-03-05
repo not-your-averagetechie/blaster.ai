@@ -1,4 +1,15 @@
 import re
+import warnings
+from functools import wraps
+
+def suppress_warnings(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=UserWarning)
+            warnings.filterwarnings("ignore", module="urllib3")
+            return func(*args, **kwargs)
+    return wrapper
 
 def clean_text(text):
     # Remove HTML tags
