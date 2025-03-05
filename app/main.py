@@ -93,13 +93,18 @@ def create_streamlit_app(llm, portfolio, clean_text):
 
 @suppress_warnings
 def main():
-    # Configure SSL context
-    configure_ssl()
-    
-    chain = Chain()
-    portfolio = Portfolio()
-    st.set_page_config(layout="wide", page_title="Cold Email Generator", page_icon="📧")
-    create_streamlit_app(chain, portfolio, clean_text)
+    try:
+        # Configure SSL context
+        configure_ssl()
+        
+        chain = Chain()
+        portfolio = Portfolio()
+        st.set_page_config(layout="wide", page_title="Cold Email Generator", page_icon="📧")
+        create_streamlit_app(chain, portfolio, clean_text)
+    except Exception as e:
+        st.error(f"Application Error: {str(e)}")
+        if os.environ.get('VERCEL_ENV'):
+            st.error("Note: Some features may be limited in the deployed version.")
 
 
 if __name__ == "__main__":
